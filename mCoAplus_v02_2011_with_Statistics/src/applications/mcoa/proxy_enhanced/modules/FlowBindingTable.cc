@@ -64,20 +64,20 @@ FlowBindingTable::FlowBindingTable() {
             "2001:db8::33a1:cc02", 1, 1, 0, 1);
     existingFlowBindingEntries.push_back(newEntryToInsert);
     newEntryToInsert = FlowBindingEntry(1000, 1000, "2001:db8::299:202",
-            "2001:db8::33a1:cc02", 1, 1, 0, 2);
+            "2001:db8::33a1:cc02", 1, 0, 0, 2);
     existingFlowBindingEntries.push_back(newEntryToInsert);
     newEntryToInsert = FlowBindingEntry(1000, 1000, "2001:db8::199:203",
-            "2001:db8::33a1:cc02", 1, 1, 0, 3);
+            "2001:db8::33a1:cc02", 1, 0, 0, 3);
     existingFlowBindingEntries.push_back(newEntryToInsert);
 
     newEntryToInsert = FlowBindingEntry(1000, 1000, "2001:db8::2aa:401",
             "2001:db8::33a1:cc02", 3, 1, 0, 1);
     existingFlowBindingEntries.push_back(newEntryToInsert);
     newEntryToInsert = FlowBindingEntry(1000, 1000, "2001:db8::299:402",
-            "2001:db8::33a1:cc02", 3, 1, 0, 2);
+            "2001:db8::33a1:cc02", 3, 0, 0, 2);
     existingFlowBindingEntries.push_back(newEntryToInsert);
     newEntryToInsert = FlowBindingEntry(1000, 1000, "2001:db8::199:403",
-            "2001:db8::33a1:cc02", 3, 1, 0, 3);
+            "2001:db8::33a1:cc02", 3, 0, 0, 3);
     existingFlowBindingEntries.push_back(newEntryToInsert);
 
 }
@@ -485,7 +485,7 @@ void FlowBindingTable::setChannelActive(SetChannelActive* fromHA) {
 
     }
 
-    cout << "update of table cause of signal strength message: " << endl;
+    cout << "Signal-Strength-Update for HoA: "<<fromHA->getHomeAddressOfMN()<<" with channel: "<<fromHA->getChannelNumber() << endl;
 
     //activate the wanted channel
     bool channelActivated = false;
@@ -495,6 +495,7 @@ void FlowBindingTable::setChannelActive(SetChannelActive* fromHA) {
                 && (it->channelNumber == fromHA->getChannelNumber())) {
             it->setIsActive(true);
             channelActivated = true;
+            cout<<"BLABLABLA"<<endl;
         }
     }
 

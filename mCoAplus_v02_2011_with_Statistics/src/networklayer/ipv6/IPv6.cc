@@ -188,7 +188,7 @@ void IPv6::endService(cPacket *msg) {
     //update the Flow Binding Table with the current address of the MN:
     if (dynamic_cast<SetChannelActive *>(msg)) {
         SetChannelActive* fromHA = check_and_cast<SetChannelActive*>(msg);
-        cout<<myHumanReadableName<<": Signalstärke Update der Flow Binding Table"<<endl;
+        cout<<myHumanReadableName<<": Signalstärke Update der Flow Binding Table "<<fromHA->getHomeAddressOfMN()<<endl;
         flowBindingTable->setChannelActive(fromHA->dup());
         return;
     }

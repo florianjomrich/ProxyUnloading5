@@ -660,9 +660,9 @@ void Proxy_Unloading_Control_App::handleMessage(cMessage* msg) {
 
         //**********************************************************************
         if (dynamic_cast<SetChannelActive*>(msg)){
-            SetChannelActive* newChannelToSetActive = new SetChannelActive();
+            SetChannelActive* newChannelToSetActive = check_and_cast<SetChannelActive*>(msg);
             if(isHA){
-                cout<<humanReadableName<<" hat Signalstärke update erhalten und aktualisiert sich selbst"<<endl;
+                cout<<humanReadableName<<" hat Signalstärke Update erhalten und aktualisiert sich selbst: "<<newChannelToSetActive->getHomeAddressOfMN()<<endl;
 
                 //update of the own table of CN
                 send(newChannelToSetActive->dup(), "uDPControllAppConnection$o");
