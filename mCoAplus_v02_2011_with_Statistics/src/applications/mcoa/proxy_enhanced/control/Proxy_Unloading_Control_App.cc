@@ -650,7 +650,7 @@ void Proxy_Unloading_Control_App::handleMessage(cMessage* msg) {
                // cout<<"Signal Update recieved !!! Access Point: "<<signalUpdate->getAccessPoint()<<" SignalStrength: "<<signalUpdate->getValueOfSNR() <<endl;
 
                 if(greatestReceivedSignalStrengthSoFar<signalUpdate->getValueOfSNR() ){
-                    //cout<<"Better SNR detected: "<<greatestReceivedSignalStrengthSoFar<<" < "<<signalUpdate->getValueOfSNR()<<endl;
+                    cout<<humanReadableName<< ": Better SNR detected: "<<greatestReceivedSignalStrengthSoFar<<" < "<<signalUpdate->getValueOfSNR()<<endl;
                     greatestReceivedSignalStrengthSoFar = signalUpdate->getValueOfSNR();
                     AccessPointWithGreatestReceivedSignalStrengthSoFar = signalUpdate->getAccessPoint();
                 }
