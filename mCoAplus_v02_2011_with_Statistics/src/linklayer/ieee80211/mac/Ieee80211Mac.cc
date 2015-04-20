@@ -22,6 +22,8 @@
 #include "InterfaceTableAccess.h"
 #include "PhyControlInfo_m.h"
 
+using std::cout;
+
 Define_Module(Ieee80211Mac);
 
 // don't forget to keep synchronized the C++ enum and the runtime enum definition
@@ -315,7 +317,7 @@ void Ieee80211Mac::handleCommand(cMessage *msg)
 
 void Ieee80211Mac::handleLowerMsg(cPacket *msg)
 {
-    EV << "received message from lower layer: " << msg << endl;
+  //  cout << "received message from lower layer: " << msg << endl;
 
     nb->fireChangeNotification(NF_LINK_FULL_PROMISCUOUS, msg);
     if (msg->getControlInfo())

@@ -1,0 +1,27 @@
+!SESSION 2015-04-20 16:17:41.975 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.7.0_75
+java.vendor=Oracle Corporation
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_US
+Command-line arguments:  -data /home/ubuntu/ProxyUnloading5 -os linux -ws gtk -arch x86_64
+
+!ENTRY org.omnetpp.main 1 0 2015-04-20 16:17:45.892
+!MESSAGE OMNeT++ IDE 4.4.1.140307-1086eab started.
+!SESSION 2015-04-20 16:18:44.498 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.7.0_75
+java.vendor=Oracle Corporation
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_US
+Command-line arguments:  -os linux -ws gtk -arch x86_64
+
+!ENTRY org.omnetpp.main 1 0 2015-04-20 16:18:48.474
+!MESSAGE OMNeT++ IDE 4.4.1.140307-1086eab started.
+
+!ENTRY org.eclipse.cdt.core 1 0 2015-04-20 16:19:07.022
+!MESSAGE Indexed 'testMCoA_v2_2011' (0 sources, 0 headers) in 0.00 sec: 0 declarations; 0 references; 0 unresolved inclusions; 0 syntax errors; 0 unresolved names (0.00%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2015-04-20 16:19:59.507
+!MESSAGE Indexed 'mCoAplus_v02_2011_with_Statistics' (541 sources, 1,322 headers) in 52.46 sec: 136,674 declarations; 510,271 references; 145 unresolved inclusions; 382 syntax errors; 2,955 unresolved names (0.45%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2015-04-20 16:19:59.510
+!MESSAGE Indexed 'test_zum_Anpassen_der_App' (0 sources, 0 headers) in 0.00 sec: 0 declarations; 0 references; 0 unresolved inclusions; 0 syntax errors; 0 unresolved names (0.00%)

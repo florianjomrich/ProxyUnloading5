@@ -36,6 +36,9 @@ module Ieee80211NicSTA
         input uppergateIn; // to upper layers
         output uppergateOut; // from upper layers
         input radioIn @labels(AirFrame); // to receive AirFrames
+        
+        output signalUpdateChannelToProxyControlAppFurther;
+        
     submodules:
         agent: Ieee80211AgentSTA {
             parameters:
@@ -58,6 +61,7 @@ module Ieee80211NicSTA
         radioIn --> radio.radioIn;
         radio.uppergateIn <-- mac.lowergateOut;
         radio.uppergateOut --> mac.lowergateIn;
+        radio.signalUpdateChannelToProxyControlApp --> signalUpdateChannelToProxyControlAppFurther;
 
         mac.uppergateOut --> mgmt.macIn;
         mac.uppergateIn <-- mgmt.macOut;

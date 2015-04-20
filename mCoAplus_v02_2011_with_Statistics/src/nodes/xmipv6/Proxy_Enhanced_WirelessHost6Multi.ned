@@ -180,6 +180,8 @@ module Proxy_Enhanced_WirelessHost6Multi
             radioIn[i] --> wlan[i].radioIn;
             wlan[i].uppergateOut --> networkLayer.ifIn[sizeof(pppg)+sizeof(ethg)+i];
             wlan[i].uppergateIn <-- networkLayer.ifOut[sizeof(pppg)+sizeof(ethg)+i];
+            
+            wlan[i].signalUpdateChannelToProxyControlAppFurther --> proxyUnloadingControlApp.signalUpdateChannel++;
 
         }
 

@@ -56,16 +56,20 @@ void Proxy_Unloading_Control_App::initialize() {
     setActiveIPAddressTimeOut = par("setActiveIPAddressTimeOut");
     flowBindingUpdateTimeOut = par("flowBindingUpdateTimeOut");
     requestForConnectionTimeOut = par("requestForConnectionTimeOut");
+    signalUpdateTimeOut = par("signalUpdateTimeOut");
 
     flowBindingUpdatestimeOutMessage = new cMessage();
     requestForConnectionTimeOutMessage = new cMessage();
     setActiveIPAddressTimeOutMessage = new cMessage();
+    signalUpdateTimeOutMessage = new cMessage();
 
     flowBindingUpdatesToSend = std::vector<FlowBindingUpdate*>();
     requestForConnectionToSend = std::vector<RequetConnectionToLegacyServer*>();
     addresseToBeSetActive = std::vector<SetAddressActive*>();
 
     requestForConnectionToSendCounter = 0;
+
+    greatestReceivedSignalStrengthSoFar=-100;//to initialize the SignalStrength Storage Variable
 
     //##########################################
 
@@ -83,14 +87,16 @@ void Proxy_Unloading_Control_App::initialize() {
     if (startTime > 0) {
 
         //############## schedule the timers for handling the requests periodicaly:
-        scheduleAt(startTime + requestForConnectionTimeOut,
-                requestForConnectionTimeOutMessage);
+        //scheduleAt(startTime + requestForConnectionTimeOut,
+         //       requestForConnectionTimeOutMessage);
 
-        scheduleAt(startTime + flowBindingUpdateTimeOut,
-                flowBindingUpdatestimeOutMessage);
+       // scheduleAt(startTime + flowBindingUpdateTimeOut,
+        //        flowBindingUpdatestimeOutMessage);
 
-        scheduleAt(startTime + setActiveIPAddressTimeOut,
-                setActiveIPAddressTimeOutMessage);
+        //scheduleAt(startTime + setActiveIPAddressTimeOut,
+        //        setActiveIPAddressTimeOutMessage);
+
+        scheduleAt(startTime + signalUpdateTimeOut,signalUpdateTimeOutMessage);
 
         //############## TO INFLUENCE THE DATA FLOW #####################
         if (isMN) {
@@ -274,9 +280,57 @@ void Proxy_Unloading_Control_App::handleMessage(cMessage* msg) {
         }
         //##########################################################################
 
+        //##### send periodically the strongest transmission station available ##########
+
+        if (msg == signalUpdateTimeOutMessage) {
+
+                    if (isMN) {
+
+
+
+
+                        SetChannelActive* newChannelToSetActive = new SetChannelActive();
+                        newChannelToSetActive->setHomeAddressOfMN(IPAddressResolver().resolve(humanReadableName).str().c_str());
+
+
+                        newChannelToSetActive->setChannelNumber(-1);
+
+                        if(!strcmp(AccessPointWithGreatestReceivedSignalStrengthSoFar,"10-AA-00-00-02-B3")){
+                            newChannelToSetActive->setChannelNumber(3);
+                        }
+                        if(!strcmp(AccessPointWithGreatestReceivedSignalStrengthSoFar,"10-AA-00-00-02-B2")){
+                                                  newChannelToSetActive->setChannelNumber(2);
+                                              }
+                        if(!strcmp(AccessPointWithGreatestReceivedSignalStrengthSoFar,"10-AA-00-00-01-A2")){
+                            newChannelToSetActive->setChannelNumber(1);
+                        }
+
+
+                        RoutingTable6* rt6 = RoutingTable6Access().get();
+                        sendToUDPMCOA(newChannelToSetActive->dup(), localPort,
+                                                    rt6->getHomeNetHA_adr(), 2000, true);
+
+
+                        cout << humanReadableName
+                                                  << ": sends new Strongest Signal Info For the HA and the CN to update their Flow Binding Tables."
+                                                  << " HomeAddressOfMN: "<< newChannelToSetActive->getHomeAddressOfMN()
+                                                  << " ChannelNumber: "<<newChannelToSetActive->getChannelNumber()
+                                                  << endl;
+
+                        //reset for next signal update to be send
+                        AccessPointWithGreatestReceivedSignalStrengthSoFar ="";
+                        greatestReceivedSignalStrengthSoFar = -100;
+
+                    }
+                    scheduleAt(simTime() + signalUpdateTimeOut, msg);
+                    return;
+                }
+
+        //##########################################################################
+
     } else {
 
-        if (dynamic_cast<RequetConnectionToLegacyServer*>(msg)) {
+         if (dynamic_cast<RequetConnectionToLegacyServer*>(msg)) {
 
             if (isMN) {
 
@@ -587,6 +641,54 @@ void Proxy_Unloading_Control_App::handleMessage(cMessage* msg) {
             }
             return;
         }
+
+        //**********************************************************************
+        //Signal Update received from radio -> store for later perodic updating of the activ address
+        if (dynamic_cast<SignalUpdate*>(msg)) {
+            if(isMN){
+                SignalUpdate* signalUpdate = check_and_cast<SignalUpdate*>(msg);
+               // cout<<"Signal Update recieved !!! Access Point: "<<signalUpdate->getAccessPoint()<<" SignalStrength: "<<signalUpdate->getValueOfSNR() <<endl;
+
+                if(greatestReceivedSignalStrengthSoFar<signalUpdate->getValueOfSNR() ){
+                    //cout<<"Better SNR detected: "<<greatestReceivedSignalStrengthSoFar<<" < "<<signalUpdate->getValueOfSNR()<<endl;
+                    greatestReceivedSignalStrengthSoFar = signalUpdate->getValueOfSNR();
+                    AccessPointWithGreatestReceivedSignalStrengthSoFar = signalUpdate->getAccessPoint();
+                }
+            }
+            return;
+        }
+
+        //**********************************************************************
+        if (dynamic_cast<SetChannelActive*>(msg)){
+            SetChannelActive* newChannelToSetActive = new SetChannelActive();
+            if(isHA){
+                cout<<humanReadableName<<" hat Signalstärke update erhalten und aktualisiert sich selbst"<<endl;
+
+                //update of the own table of CN
+                send(newChannelToSetActive->dup(), "uDPControllAppConnection$o");
+
+
+                //send further to the Correspondent Nodes so that they can update their information
+                IPvXAddress cn0 = IPAddressResolver().resolve("CN[0]");
+                IPvXAddress cn1 = IPAddressResolver().resolve("CN[1]");
+
+                sendToUDPMCOA(newChannelToSetActive->dup(), localPort, cn0, 2000,
+                                      true);
+                sendToUDPMCOA(newChannelToSetActive->dup(), localPort, cn1, 2000,
+                                                      true);
+            }
+            if(isCN){
+
+                //update of the own table of CN
+                send(newChannelToSetActive->dup(), "uDPControllAppConnection$o");
+
+                cout<<humanReadableName<<" hat Signalstärke update erhalten und aktualisiert sich selbst"<<endl;
+            }
+
+            return;
+        }
+
+
 
         //**********************************************************************
 

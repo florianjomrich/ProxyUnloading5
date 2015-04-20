@@ -25,9 +25,10 @@ public:
     int localHostIdentifier;
     bool isActive;
     bool forThisConncectionCNisCapable;
+    int channelNumber;
 
     FlowBindingEntry();
-    FlowBindingEntry(int srcPort, int destPort,const char* srcAddress,const char* destAddress);
+    FlowBindingEntry(int srcPort, int destPort,const char* srcAddress,const char* destAddress,int localHostIdentifier, bool isActive,bool forThisConncectionCNisCapable,int channelNumber);
     virtual ~FlowBindingEntry();
 
     const char* getDestAddress() const {
@@ -86,6 +87,14 @@ public:
 
       void setForThisConncectionCNisCapable(bool status){
           this->forThisConncectionCNisCapable = status;
+      }
+
+      int getChannelNumber(){
+          return channelNumber;
+      }
+
+      void setChannelNumber(int status){
+          this->channelNumber = status;
       }
 };
 

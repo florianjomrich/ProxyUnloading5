@@ -24,6 +24,7 @@
 #include <RequetConnectionToLegacyServer_m.h>
 #include <FlowBindingUpdate_m.h>
 #include <SetAddressActive_m.h>
+#include <SetChannelActive_m.h>
 // alternative #include <string.h>
 
 class FlowBindingTable: public cSimpleModule {
@@ -66,6 +67,10 @@ public:
     virtual void printoutContentOftable();
 
     virtual void setIPAddressActive(SetAddressActive* fromHA);
+
+    virtual int getTheNeededChannelNumber(const char* NewCoAdress);
+
+    virtual void setChannelActive(SetChannelActive* fromHA);
 
 };
 

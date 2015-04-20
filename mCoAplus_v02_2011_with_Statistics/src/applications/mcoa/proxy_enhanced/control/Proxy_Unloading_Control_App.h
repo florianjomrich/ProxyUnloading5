@@ -33,6 +33,8 @@
 #include "SetAddressActive_m.h"
 #include "ACK_FlowBinding_m.h"
 #include "ACK_SetAddressActive_m.h"
+#include "SignalUpdate_m.h"
+#include "SetChannelActive_m.h"
 
 /**
  * A "Realtime" VideoStream client application.
@@ -65,6 +67,9 @@ protected:
     bool isCapableCN;
     const char* humanReadableName;
 
+    double greatestReceivedSignalStrengthSoFar;
+    const char* AccessPointWithGreatestReceivedSignalStrengthSoFar;
+
     //for timing - and resending if no Ack was received
     std::vector<FlowBindingUpdate*> flowBindingUpdatesToSend;
     std::vector<RequetConnectionToLegacyServer*> requestForConnectionToSend;
@@ -76,12 +81,14 @@ protected:
     double setActiveIPAddressTimeOut;
     double requestForConnectionTimeOut;
     double flowBindingUpdateTimeOut;
+    double signalUpdateTimeOut;
     simtime_t startTime;
 
     //timing messages
     cMessage* flowBindingUpdatestimeOutMessage;
     cMessage* requestForConnectionTimeOutMessage;
     cMessage* setActiveIPAddressTimeOutMessage;
+    cMessage* signalUpdateTimeOutMessage;
 
 protected:
     ///@name Overridden cSimpleModule functions

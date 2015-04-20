@@ -24,10 +24,14 @@ FlowBindingEntry::~FlowBindingEntry() {
     // TODO Auto-generated destructor stub
 }
 
-FlowBindingEntry::FlowBindingEntry(int srcPort, int destPort,const char* srcAddress,const char* destAddress){
+FlowBindingEntry::FlowBindingEntry(int srcPort, int destPort,const char* srcAddress,const char* destAddress,int localHostIdentifier, bool isActive,bool forThisConncectionCNisCapable,int channelNumber){
     this->srcPort=srcPort;
     this->destPort=destPort;
     this->srcAddress=srcAddress;
     this->destAddress=destAddress;
 
+    this->localHostIdentifier=localHostIdentifier;
+    this->isActive=isActive;
+    this->forThisConncectionCNisCapable=forThisConncectionCNisCapable;
+    this->channelNumber=channelNumber;
 }

@@ -22,6 +22,7 @@
 #include "FWMath.h"
 
 
+
 Register_Class(GenericRadioModel);
 
 GenericRadioModel::GenericRadioModel()
@@ -77,6 +78,9 @@ bool GenericRadioModel::isReceivedCorrectly(AirFrame *airframe, const SnrList& r
     else if (isPacketOK(snirMin, airframe->getBitLength()+headerLengthBits, airframe->getBitrate()))
     {
         EV << "packet was received correctly, it is now handed to upper layer...\n";
+
+
+
         return true;
     }
     else

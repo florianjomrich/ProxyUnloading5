@@ -537,8 +537,10 @@ OBJS = \
     $O/applications/mcoa/proxy_enhanced/messages/app_messages/RequestVideoStream_m.o \
     $O/applications/mcoa/proxy_enhanced/messages/app_messages/VideoMessage_m.o \
     $O/applications/mcoa/proxy_enhanced/messages/control_messages/FlowBindingUpdate_m.o \
+    $O/applications/mcoa/proxy_enhanced/messages/control_messages/SetChannelActive_m.o \
     $O/applications/mcoa/proxy_enhanced/messages/control_messages/SetAddressActive_m.o \
     $O/applications/mcoa/proxy_enhanced/messages/control_messages/ACK_Request_m.o \
+    $O/applications/mcoa/proxy_enhanced/messages/control_messages/SignalUpdate_m.o \
     $O/applications/mcoa/proxy_enhanced/messages/control_messages/RequetConnectionToLegacyServer_m.o \
     $O/applications/mcoa/proxy_enhanced/messages/control_messages/ACK_FlowBinding_m.o \
     $O/applications/mcoa/proxy_enhanced/messages/control_messages/ACK_SetAddressActive_m.o \
@@ -615,8 +617,10 @@ MSGFILES = \
     applications/mcoa/proxy_enhanced/messages/app_messages/RequestVideoStream.msg \
     applications/mcoa/proxy_enhanced/messages/app_messages/VideoMessage.msg \
     applications/mcoa/proxy_enhanced/messages/control_messages/FlowBindingUpdate.msg \
+    applications/mcoa/proxy_enhanced/messages/control_messages/SetChannelActive.msg \
     applications/mcoa/proxy_enhanced/messages/control_messages/SetAddressActive.msg \
     applications/mcoa/proxy_enhanced/messages/control_messages/ACK_Request.msg \
+    applications/mcoa/proxy_enhanced/messages/control_messages/SignalUpdate.msg \
     applications/mcoa/proxy_enhanced/messages/control_messages/RequetConnectionToLegacyServer.msg \
     applications/mcoa/proxy_enhanced/messages/control_messages/ACK_FlowBinding.msg \
     applications/mcoa/proxy_enhanced/messages/control_messages/ACK_SetAddressActive.msg \
@@ -1144,6 +1148,8 @@ $O/applications/mcoa/proxy_enhanced/control/Proxy_Unloading_Control_App.o: appli
 	applications/mcoa/proxy_enhanced/messages/control_messages/FlowBindingUpdate_m.h \
 	applications/mcoa/proxy_enhanced/messages/control_messages/RequetConnectionToLegacyServer_m.h \
 	applications/mcoa/proxy_enhanced/messages/control_messages/SetAddressActive_m.h \
+	applications/mcoa/proxy_enhanced/messages/control_messages/SetChannelActive_m.h \
+	applications/mcoa/proxy_enhanced/messages/control_messages/SignalUpdate_m.h \
 	applications/mcoa/udpbase/MCoAUDPBase.h \
 	base/INETDefs.h \
 	base/INotifiable.h \
@@ -1190,12 +1196,17 @@ $O/applications/mcoa/proxy_enhanced/messages/control_messages/RequetConnectionTo
 	applications/mcoa/proxy_enhanced/messages/control_messages/RequetConnectionToLegacyServer_m.h
 $O/applications/mcoa/proxy_enhanced/messages/control_messages/SetAddressActive_m.o: applications/mcoa/proxy_enhanced/messages/control_messages/SetAddressActive_m.cc \
 	applications/mcoa/proxy_enhanced/messages/control_messages/SetAddressActive_m.h
+$O/applications/mcoa/proxy_enhanced/messages/control_messages/SetChannelActive_m.o: applications/mcoa/proxy_enhanced/messages/control_messages/SetChannelActive_m.cc \
+	applications/mcoa/proxy_enhanced/messages/control_messages/SetChannelActive_m.h
+$O/applications/mcoa/proxy_enhanced/messages/control_messages/SignalUpdate_m.o: applications/mcoa/proxy_enhanced/messages/control_messages/SignalUpdate_m.cc \
+	applications/mcoa/proxy_enhanced/messages/control_messages/SignalUpdate_m.h
 $O/applications/mcoa/proxy_enhanced/modules/FlowBindingEntry.o: applications/mcoa/proxy_enhanced/modules/FlowBindingEntry.cc \
 	applications/mcoa/proxy_enhanced/modules/FlowBindingEntry.h
 $O/applications/mcoa/proxy_enhanced/modules/FlowBindingTable.o: applications/mcoa/proxy_enhanced/modules/FlowBindingTable.cc \
 	applications/mcoa/proxy_enhanced/messages/control_messages/FlowBindingUpdate_m.h \
 	applications/mcoa/proxy_enhanced/messages/control_messages/RequetConnectionToLegacyServer_m.h \
 	applications/mcoa/proxy_enhanced/messages/control_messages/SetAddressActive_m.h \
+	applications/mcoa/proxy_enhanced/messages/control_messages/SetChannelActive_m.h \
 	applications/mcoa/proxy_enhanced/modules/FlowBindingEntry.h \
 	applications/mcoa/proxy_enhanced/modules/FlowBindingTable.h
 $O/applications/mcoa/udpbase/MCoAUDPBase.o: applications/mcoa/udpbase/MCoAUDPBase.cc \
@@ -2590,6 +2601,7 @@ $O/linklayer/radio/Ieee80211NewRadioModel.o: linklayer/radio/Ieee80211NewRadioMo
 	linklayer/radio/errormodel/yans-error-rate-model.h \
 	util/FWMath.h
 $O/linklayer/radio/Ieee80211Radio.o: linklayer/radio/Ieee80211Radio.cc \
+	applications/mcoa/proxy_enhanced/messages/control_messages/SignalUpdate_m.h \
 	base/BasicModule.h \
 	base/Coord.h \
 	base/INETDefs.h \
@@ -2598,6 +2610,7 @@ $O/linklayer/radio/Ieee80211Radio.o: linklayer/radio/Ieee80211Radio.cc \
 	base/ModuleAccess.h \
 	base/NotificationBoard.h \
 	base/NotifierConsts.h \
+	linklayer/contract/MACAddress.h \
 	linklayer/contract/RadioState.h \
 	linklayer/mfcore/AirFrame_m.h \
 	linklayer/mfcore/ModulationType.h \
@@ -2607,6 +2620,30 @@ $O/linklayer/radio/Ieee80211Radio.o: linklayer/radio/Ieee80211Radio.cc \
 	linklayer/radio/IRadioModel.h \
 	linklayer/radio/IReceptionModel.h \
 	linklayer/radio/Ieee80211Radio.h \
+	networklayer/common/IInterfaceTable.h \
+	networklayer/common/InterfaceEntry.h \
+	networklayer/common/InterfaceTableAccess.h \
+	networklayer/common/InterfaceToken.h \
+	networklayer/contract/IPProtocolId_m.h \
+	networklayer/contract/IPv6Address.h \
+	networklayer/contract/IPv6ControlInfo.h \
+	networklayer/contract/IPv6ControlInfo_m.h \
+	networklayer/icmpv6/ICMPv6.h \
+	networklayer/icmpv6/ICMPv6Access.h \
+	networklayer/icmpv6/ICMPv6Message_m.h \
+	networklayer/icmpv6/IPv6NDMessage_m.h \
+	networklayer/icmpv6/IPv6NeighbourCache.h \
+	networklayer/icmpv6/IPv6NeighbourDiscovery.h \
+	networklayer/ipv6/IPv6Datagram.h \
+	networklayer/ipv6/IPv6Datagram_m.h \
+	networklayer/ipv6/IPv6ExtensionHeaders.h \
+	networklayer/ipv6/IPv6ExtensionHeaders_m.h \
+	networklayer/ipv6/IPv6InterfaceData.h \
+	networklayer/ipv6/RoutingTable6.h \
+	networklayer/ipv6/RoutingTable6Access.h \
+	networklayer/mcoa/KeyMCoABind.h \
+	networklayer/mcoa/KeyMCoADAD.h \
+	networklayer/xmipv6/MobilityHeader_m.h \
 	util/FWMath.h \
 	util/PowerControlManager.h \
 	util/PowerControlMessages_m.h \
@@ -2620,7 +2657,9 @@ $O/linklayer/radio/Ieee80211Radio.o: linklayer/radio/Ieee80211Radio.cc \
 $O/linklayer/radio/Ieee80211RadioModel.o: linklayer/radio/Ieee80211RadioModel.cc \
 	base/Coord.h \
 	base/INETDefs.h \
+	linklayer/contract/MACAddress.h \
 	linklayer/ieee80211/mac/Ieee80211Consts.h \
+	linklayer/ieee80211/mac/Ieee80211Frame_m.h \
 	linklayer/mfcore/AirFrame_m.h \
 	linklayer/mfcore/ModulationType.h \
 	linklayer/mfcore/SnrList.h \
@@ -2628,6 +2667,13 @@ $O/linklayer/radio/Ieee80211RadioModel.o: linklayer/radio/Ieee80211RadioModel.cc
 	linklayer/radio/IRadioModel.h \
 	linklayer/radio/Ieee80211RadioModel.h \
 	linklayer/radio/errormodel/Ieee80211DataRate.h \
+	networklayer/contract/IPProtocolId_m.h \
+	networklayer/contract/IPv6Address.h \
+	networklayer/contract/IPv6ControlInfo.h \
+	networklayer/contract/IPv6ControlInfo_m.h \
+	networklayer/ipv6/IPv6Datagram.h \
+	networklayer/ipv6/IPv6Datagram_m.h \
+	networklayer/ipv6/IPv6ExtensionHeaders_m.h \
 	util/FWMath.h
 $O/linklayer/radio/Ieee80211aRadio.o: linklayer/radio/Ieee80211aRadio.cc \
 	base/BasicModule.h \
@@ -3670,6 +3716,7 @@ $O/networklayer/ipv6/IPv6.o: networklayer/ipv6/IPv6.cc \
 	applications/mcoa/proxy_enhanced/messages/control_messages/FlowBindingUpdate_m.h \
 	applications/mcoa/proxy_enhanced/messages/control_messages/RequetConnectionToLegacyServer_m.h \
 	applications/mcoa/proxy_enhanced/messages/control_messages/SetAddressActive_m.h \
+	applications/mcoa/proxy_enhanced/messages/control_messages/SetChannelActive_m.h \
 	applications/mcoa/proxy_enhanced/modules/FlowBindingEntry.h \
 	applications/mcoa/proxy_enhanced/modules/FlowBindingTable.h \
 	applications/mcoa/proxy_enhanced/modules/FlowBindingTableAccess.h \

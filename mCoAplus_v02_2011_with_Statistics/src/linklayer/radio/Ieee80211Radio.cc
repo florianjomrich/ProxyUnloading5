@@ -18,5 +18,68 @@
 
 #include "Ieee80211Radio.h"
 
+//PROXY UNLOADING
+using std::cout;
+#include "IPv6NeighbourDiscovery.h"
+#include "SignalUpdate_m.h"
+
 Define_Module(Ieee80211Radio);
 
+
+
+void Ieee80211Radio::sendUp(AirFrameExtended *airframe){
+
+
+
+    //PROXY UNLOADING FJ
+
+    cPacket *frame = airframe->dup()->decapsulate();
+
+       if (!strcmp(airframe->getName(), "RApacket")) {
+          // cout << "VOM WIFI MODUL ABEGRIFFENES PAKET:" << airframe->getName()
+              //     << " SNR of it: " << airframe->getSnr() << " SENDING Position: "
+              //     << airframe->getSenderPos() << endl;
+           //cout<<"Ieee80211Frame: "<<frame2->getName()<<endl;
+
+           //VERY IMPORTANT TO MAKE A COPY !!!
+           cPacket* frame2 = frame->dup();
+           cPacket* packet1 = check_and_cast<cPacket*>(frame2->decapsulate());
+
+           cPacket* packet2 = check_and_cast<cPacket*>(packet1->decapsulate());
+
+          // cout << "Packet 1: " << packet1->getName() << endl;
+           // cPacket* packet2 = packet1->decapsulate();
+       //    if (dynamic_cast<ICMPv6Message *>(packet1)) {
+            //   cout<<"HALLO WELT"<<endl;
+
+
+        //   }
+           if (dynamic_cast<IPv6RouterAdvertisement*>(packet2)) {
+               IPv6RouterAdvertisement* advertisement = check_and_cast<
+                       IPv6RouterAdvertisement*>(packet2);
+
+              // cout << advertisement->getSourceLinkLayerAddress()<<endl;
+
+               //cout << "Es ist ein RA Paket !!!" << endl;
+
+               /*IPv6ControlInfo *ctrlInfo = check_and_cast<IPv6ControlInfo*>(
+                                             packet1->getControlInfo());
+                                     cout << "SourceAddresse:" << ctrlInfo->getSrcAddr() << endl;*/
+
+               SignalUpdate* newSignalReceived = new SignalUpdate();
+               newSignalReceived->setValueOfSNR(airframe->getSnr());
+               newSignalReceived->setAccessPoint(advertisement->getSourceLinkLayerAddress().str().c_str());
+               newSignalReceived->setName("SignalUpdate To ProxyApp");
+
+              send(newSignalReceived->dup(),"signalUpdateChannelToProxyControlApp");
+
+           }
+
+       }
+
+       //##################
+
+
+       //old stuff:
+          AbstractRadioExtended::sendUp(airframe);
+}

@@ -21,6 +21,11 @@
 #include "Ieee80211Consts.h"
 #include "FWMath.h"
 
+//PROXY UNLOADING:
+#include "IPv6ControlInfo.h"
+#include "Ieee80211Frame_m.h"
+
+using std::cout;
 
 Register_Class(Ieee80211RadioModel);
 
@@ -70,6 +75,8 @@ bool Ieee80211RadioModel::isReceivedCorrectly(AirFrame *airframe, const SnrList&
     else if (isPacketOK(snirMin, frame->getBitLength(), airframe->getBitrate()))
     {
         EV << "packet was received correctly, it is now handed to upper layer...\n";
+
+
         return true;
     }
     else

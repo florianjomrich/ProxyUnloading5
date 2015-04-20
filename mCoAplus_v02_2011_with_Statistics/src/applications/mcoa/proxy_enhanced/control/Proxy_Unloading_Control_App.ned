@@ -50,6 +50,7 @@ simple Proxy_Unloading_Control_App like MCoAUDPBase
        	volatile double setActiveIPAddressTimeOut @unit("s");
         volatile double requestForConnectionTimeOut @unit("s");
         volatile double flowBindingUpdateTimeOut @unit("s");
+        volatile double signalUpdateTimeOut @unit("s");
 
 
     gates:
@@ -59,6 +60,7 @@ simple Proxy_Unloading_Control_App like MCoAUDPBase
         input fromBindingUpdateList;
         inout uDPControllAppConnection;
         inout bindingUpdateChannelToProxyControlApp;
+        input signalUpdateChannel[];
 
 }
 

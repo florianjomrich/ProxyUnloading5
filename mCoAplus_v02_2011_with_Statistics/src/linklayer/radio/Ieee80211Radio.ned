@@ -53,5 +53,10 @@ simple Ieee80211Radio extends PropagationModel
         double usage_radio_sleep @unit("mA") = default (-1mA); // disable battery registration 
         double usage_radio_send @unit("mA") = default (-1mA); // disable battery registration 
         
+	gates:
+	    //PROXY UNLOADING
+	    output signalUpdateChannelToProxyControlApp  @loose; //is only connected for MNs not for APs
+            
+        
 }
 
